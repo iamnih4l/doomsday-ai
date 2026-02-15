@@ -59,7 +59,7 @@ const Clock = ({ data }) => {
             cy="200"
             r="180"
             fill="none"
-            stroke="rgb(51, 65, 85)"
+            stroke="rgb(40, 40, 40)"
             strokeWidth="2"
             className="opacity-50"
           />
@@ -69,7 +69,7 @@ const Clock = ({ data }) => {
             cx="200"
             cy="200"
             r="170"
-            fill="rgb(15, 23, 42)"
+            fill="rgb(0, 0, 0)"
             className="opacity-90"
           />
           
