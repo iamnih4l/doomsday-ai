@@ -1,316 +1,128 @@
-# Global Risk Clock 🕐
+# 🕰️ Doomsday AI: The Autonomous Risk Clock
 
-An AI-driven real-time assessment of humanity's global risk level, visualized as a clock showing minutes and seconds to "midnight" - representing catastrophic global harm.
+[![Vercel Deploy](https://therealsujitk-vercel-badge.vercel.app/?app=doomsday-ai-lzee)](https://doomsday-ai-lzee.vercel.app/)
+[![Autonomous Scheduler](https://github.com/iamnih4l/doomsday-ai/actions/workflows/scheduler.yml/badge.svg)](https://github.com/iamnih4l/doomsday-ai/actions)
+[![Powerd By Gemini](https://img.shields.io/badge/AI-Gemini%201.5%20Flash-blue?logo=google-gemini)](https://deepmind.google/technologies/gemini/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 🌟 Overview
+> **"What time is it?"**
+> Currently: **90 Seconds to Midnight.** ⚠️
 
-The Global Risk Clock is a production-ready frontend web application that provides a scientific, calm, and transparent visualization of global existential risks. Inspired by the Doomsday Clock (but not affiliated with the Bulletin of the Atomic Scientists), this project uses mocked AI assessments to track risk across five critical domains.
-
-**Live Demo:** https://risk-clock.preview.emergentagent.com
-
-## ✨ Features
-
-### 🎯 Core Components
-
-1. **Interactive Clock Visualization**
-   - Large, central circular clock with smooth ticking animation
-   - Real-time display of minutes and seconds to midnight
-   - Visual indicators including hour markers and danger zones
-   - Confidence level and last updated timestamp
-
-2. **Risk Domain Breakdown**
-   - Five critical risk domains with individual scoring:
-     - Nuclear & Military Risk
-     - Climate Risk
-     - Pandemic & Health Risk
-     - AI & Emerging Tech Risk
-     - Geopolitical Instability
-   - Visual progress bars and trend indicators
-   - Detailed descriptions for each domain
-
-3. **AI Explanation Section**
-   - Plain-language explanations of clock movements
-   - Contributing factors with bullet points
-   - Historical explanation timeline
-   - Confidence level indicators
-
-4. **Global Risk Map**
-   - Real-time hotspots based on news analysis
-   - Gemini AI extracts location data from risk reports
-   - Color-coded risk intensity based on real-time events
-   - Region-specific risk scores and descriptions
-
-5. **Historical Timeline**
-   - Chronological view of past clock movements
-   - Expandable event details
-   - Visual indicators for risk direction (closer/away from midnight)
-   - Formatted timestamps and change indicators
-
-6. **Professional UI/UX**
-   - Clean header with About dialog
-   - Comprehensive footer with disclaimers
-   - Smooth scroll navigation
-   - Responsive design (desktop-first, mobile-friendly)
-   - Dark theme with careful color system
-
-## 🛠️ Tech Stack
-
-- **Framework:** Next.js 14 (App Router)
-- **Language:** JavaScript (ready for TypeScript)
-- **Styling:** Tailwind CSS
-- **Components:** shadcn/ui (Radix UI primitives)
-- **Icons:** Lucide React
-- **Backend:** Mocked API endpoints (ready for real integration)
-
-## 📁 Project Structure
-
-```
-/app
-├── app/
-│   ├── api/
-│   │   └── [[...path]]/
-│   │       └── route.js          # Mocked API endpoints
-│   ├── page.js                   # Main application page
-│   ├── layout.js                 # Root layout with metadata
-│   └── globals.css               # Global styles and theme
-├── components/
-│   ├── Clock.js                  # Main clock visualization
-│   ├── RiskBreakdown.js          # Risk domain cards
-│   ├── AIExplanation.js          # AI explanations section
-│   ├── MapView.js                # Interactive world map
-│   ├── Timeline.js               # Historical timeline
-│   ├── Header.js                 # Navigation header
-│   ├── Footer.js                 # Footer with disclaimers
-│   └── ui/                       # shadcn/ui components
-├── lib/
-│   └── utils/                    # Utility functions
-└── package.json                  # Dependencies
-```
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js 18+ 
-- Yarn package manager
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd app
-```
-
-2. Install dependencies:
-```bash
-yarn install
-```
-
-3. Configure Environment:
-   - Copy `.env.example` to `.env`
-   - Set requests keys:
-     - `MONGODB_URI`: Connection string for MongoDB
-     - `ADMIN_API_KEY`: Secret key for Admin API access
-     - `GEMINI_API_KEY`: Google Gemini API Key (Get from aistudio.google.com)
-
-3. Run the development server:
-```bash
-yarn dev
-```
-
-4. Open your browser to:
-```
-http://localhost:3000
-```
-
-## 🔌 API Endpoints
-
-All API endpoints return mocked data and are ready for backend integration:
-
-### `/api/clock`
-Returns current clock status:
-```json
-{
-  "minutesToMidnight": 2,
-  "secondsToMidnight": 30,
-  "status": "Elevated Global Risk",
-  "confidence": "High",
-  "lastUpdated": "2026-02-15T16:00:00.000Z",
-  "trend": "stable"
-}
-```
-
-### `/api/risk-breakdown`
-Returns risk scores across five domains:
-```json
-{
-  "domains": [
-    {
-      "id": "nuclear",
-      "name": "Nuclear & Military Risk",
-      "score": 78,
-      "change": 5,
-      "description": "...",
-      "icon": "Radiation"
-    },
-    // ... 4 more domains
-  ],
-  "lastUpdated": "2026-02-15T16:00:00.000Z"
-}
-```
-
-### `/api/explanations`
-Returns AI-generated explanations:
-```json
-{
-  "explanations": [
-    {
-      "id": "1",
-      "timestamp": "2026-02-15T14:00:00.000Z",
-      "title": "Clock Moved 15 Seconds Closer to Midnight",
-      "summary": "...",
-      "factors": ["...", "...", "..."],
-      "confidence": "High",
-      "direction": "forward"
-    },
-    // ... more explanations
-  ]
-}
-```
-
-### `/api/timeline`
-Returns historical clock movements:
-```json
-{
-  "events": [
-    {
-      "id": "1",
-      "date": "2026-02-15T14:00:00.000Z",
-      "time": "2:30",
-      "direction": "closer",
-      "change": 15,
-      "reason": "AI safety concerns and geopolitical tensions",
-      "details": "..."
-    },
-    // ... more events
-  ]
-}
-```
-
-### `/api/map-data`
-Returns regional risk data:
-```json
-{
-  "regions": [
-    {
-      "id": "eastern-europe",
-      "name": "Eastern Europe",
-      "riskLevel": 85,
-      "description": "...",
-      "coordinates": { "x": 55, "y": 35 }
-    },
-    // ... more regions
-  ]
-}
-```
-
-## 🎨 Design System
-
-### Color Palette
-
-- **Background:** Deep slate/navy (`slate-950`)
-- **Text:** Light gray/white (`slate-100`, `slate-300`)
-- **Accents:**
-  - Risk increase: Amber/Red (`amber-500`, `red-500`)
-  - Risk decrease: Green (`green-500`)
-  - Neutral: Slate (`slate-700`)
-
-### Typography
-
-- Clean sans-serif font (system default)
-- Font weights: 300 (light), 400 (normal), 500 (medium)
-- Clear hierarchy with responsive sizes
-
-### Components
-
-All UI components use shadcn/ui for consistency:
-- Cards, Buttons, Badges
-- Dialog, Progress bars
-- Hover states and smooth transitions
-
-## 🔄 Real-Time Updates (Prepared)
-
-The application is structured to support real-time updates via:
-- WebSockets (socket.io ready)
-- Server-Sent Events (SSE)
-- Polling (currently simulated)
-
-To integrate real-time updates, replace the mocked API calls with your WebSocket/SSE implementation.
-
-## ♿ Accessibility
-
-- Semantic HTML structure
-- ARIA labels on interactive elements
-- High contrast color combinations
-- Keyboard navigation support
-- Screen reader friendly
-
-## 📱 Responsive Design
-
-- **Desktop-first approach**
-- Breakpoints: sm (640px), md (768px), lg (1024px), xl (1280px)
-- Mobile-friendly navigation and layouts
-- Touch-friendly interactive elements
-
-## 🔐 Important Disclaimers
-
-This project is:
-- ✅ An educational tool for raising awareness about global risks
-- ✅ Using mocked AI assessments (ready for real integration)
-- ✅ Open source and transparent
-
-This project is NOT:
-- ❌ Affiliated with the Bulletin of the Atomic Scientists
-- ❌ A replacement for the official Doomsday Clock
-- ❌ Professional risk assessment or prediction service
-
-## 🤝 Contributing
-
-Contributions are welcome! Areas for enhancement:
-
-1. **Backend Integration**
-   - Replace mocked APIs with real data sources
-   - Implement WebSocket/SSE for real-time updates
-   - Add data persistence layer
-
-2. **Enhanced Visualizations**
-   - More detailed map with actual geographic data
-   - Additional chart types for risk trends
-   - Data export functionality
-
-3. **Features**
-   - User settings and preferences
-   - Historical data comparison tools
-   - Risk scenario modeling
-   - Multi-language support
-
-## 📄 License
-
-This project is built for educational and informational purposes.
-
-## 🙏 Acknowledgments
-
-- Inspired by the Doomsday Clock by the Bulletin of the Atomic Scientists
-- Built with Next.js, Tailwind CSS, and shadcn/ui
-- Icons from Lucide React
-
-## 📞 Contact
-
-For questions, feedback, or collaboration:
-- GitHub Issues: [Link to repository]
-- Email: [Contact email]
+[**🔴 VIEW LIVE CLOCK**](https://doomsday-ai-lzee.vercel.app/)
 
 ---
 
-**Built with transparency and concern for humanity's future.** 🌍
+## 🌍 What is this?
+**Doomsday AI** is a fully autonomous, self-operating backend that monitors the state of the world 24/7.
+It uses **Artificial Intelligence (Google Gemini)** to read global news, analyze risks (Nuclear, Climate, AI, Bio), and decide if humanity is closer to or further from catastrophe.
+
+### 🧠 How It Works (The "Brain")
+```mermaid
+graph TD
+    A[🌍 BBC/Reuters RSS Feeds] -->|Every 10 mins| B(📰 News Ingestion Service)
+    B -->|Raw Articles| C{🤖 Gemini AI Decision Engine}
+    C -->|Analyze Risk & Sentiment| D[📊 Risk Database]
+    C -->|Extract Location| E[🗺️ Global Heatmap]
+    C -->|Update Time| F[🕰️ The Doomsday Clock]
+    F -->|Real-time Update| G[💻 Live Dashboard]
+```
+
+---
+
+## ✨ Key Features
+| Feature | Status | Description |
+| :--- | :---: | :--- |
+| ** autonomous_clock** | ✅ | Adjusts time based on real events (Wars, Treaties, etc.). |
+| ** news_scraper** | ✅ | Ingests headlines from major global sources every 10 mins. |
+| ** ai_explanation** | ✅ | Generates readable summaries "Why the clock moved". |
+| ** dynamic_map** | ✅ | Updates a live heatmap of global conflict zones. |
+| ** rate_limited** | ✅ | Protected against API abuse and spam. |
+
+---
+
+## 🚀 Easy Deployment (1-Click)
+
+Want your own Doomsday Clock?
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fiamnih4l%2Fdoomsday-ai&env=MONGODB_URI,GEMINI_API_KEY,ADMIN_API_KEY)
+
+**Required Environment Variables:**
+1.  `MONGODB_URI`: Connection string for MongoDB Atlas.
+2.  `GEMINI_API_KEY`: Get it from [Google AI Studio](https://aistudio.google.com/).
+3.  `ADMIN_API_KEY`: A secure password you create to protect admin routes.
+
+---
+
+## 🛠️ Manual Setup (For Developers)
+
+<details>
+<summary>Click to expand Local Installation Guide</summary>
+
+### 1. Clone & Install
+```bash
+git clone https://github.com/iamnih4l/doomsday-ai.git
+cd doomsday-ai
+npm install
+```
+
+### 2. Configure Environment
+Create a `.env.local` file:
+```properties
+MONGODB_URI=mongodb+srv://...
+GEMINI_API_KEY=AIzaSy...
+ADMIN_API_KEY=secret123
+```
+
+### 3. Run Locally
+```bash
+npm run dev
+```
+
+### 4. Manually Trigger AI
+Since corn jobs don't run automatically on localhost:
+```bash
+npm run cron:news    # Fetches news
+```
+
+</details>
+
+---
+
+## 📚 API Documentation
+
+Doomsday AI provides a public REST API for developers to build their own frontends.
+
+**Base URL**: `https://doomsday-ai-lzee.vercel.app/api`
+
+### `GET /clock/current`
+Returns the current time and risk level.
+```json
+{
+  "secondsToMidnight": 90,
+  "riskLevel": "Critical",
+  "primaryFactors": ["Nuclear Escalation", "AI Safety"]
+}
+```
+
+### `GET /risk/breakdown`
+Returns the score (0-100) for each risk category.
+```json
+{
+  "Nuclear": 85,
+  "Climate": 70,
+  "AI": 60
+}
+```
+
+---
+
+## 🤝 Contributing
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
+
+---
+
+*This project is for educational purposes and is not affiliated with the Bulletin of the Atomic Scientists.*
