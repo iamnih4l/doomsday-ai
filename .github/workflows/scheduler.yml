@@ -1,0 +1,21 @@
+name: Doomsday Autonomous Scheduler
+
+on:
+  schedule:
+    - cron: '*/10 * * * *' # Runs every 10 minutes
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  trigger-doomsday:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger News Ingestion (Every 10 mins)
+        run: |
+          curl -X POST ${{ secrets.VERCEL_PROJECT_URL }}/api/news/ingest \
+          -H "x-admin-key: ${{ secrets.ADMIN_API_KEY }}"
+
+      - name: Trigger AI Evaluation (Runs every 10 mins, effectively)
+        # We hit this every 10 mins too. The AI service will just say "no new risks" if there are none.
+        run: |
+          curl -X POST ${{ secrets.VERCEL_PROJECT_URL }}/api/ai/evaluate \
+          -H "x-admin-key: ${{ secrets.ADMIN_API_KEY }}"
