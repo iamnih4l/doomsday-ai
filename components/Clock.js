@@ -22,8 +22,12 @@ const Clock = ({ data }) => {
     return () => clearInterval(interval)
   }, [])
 
+  // Calculate angles for clock hands (only showing last 15 minutes before midnight)
   const totalSeconds = minutesToMidnight * 60 + currentSeconds
-  const angle = ((12 * 60 * 60 - totalSeconds) / (12 * 60 * 60)) * 360
+  // Map to quarter circle (0-90 degrees) representing 11:45 to 12:00
+  const maxSeconds = 15 * 60 // 15 minutes
+  const angleRange = 90 // degrees
+  const angle = ((maxSeconds - totalSeconds) / maxSeconds) * angleRange
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString('en-US', {
@@ -46,109 +50,92 @@ const Clock = ({ data }) => {
   }
 
   return (
-    <div className="flex flex-col items-center space-y-8 w-full max-w-2xl mx-auto">
-      {/* Clock Visualization */}
-      <div className="relative w-full aspect-square max-w-md">
+    <div className="flex flex-col items-center space-y-8 w-full max-w-4xl mx-auto">
+      {/* Doomsday Clock Visualization */}
+      <div className="relative w-full aspect-square max-w-2xl">
         <svg
-          viewBox="0 0 400 400"
+          viewBox="0 0 500 500"
           className="w-full h-full drop-shadow-2xl"
         >
-          {/* Outer circle */}
-          <circle
-            cx="200"
-            cy="200"
-            r="180"
+          {/* Background */}
+          <rect width="500" height="500" fill="white" />
+          
+          {/* Main Arc - thick quarter circle from 9 to 12 */}
+          <path
+            d="M 50 450 A 400 400 0 0 1 450 50"
             fill="none"
-            stroke="rgb(40, 40, 40)"
-            strokeWidth="2"
-            className="opacity-50"
+            stroke="black"
+            strokeWidth="80"
+            strokeLinecap="butt"
           />
           
-          {/* Inner circle */}
-          <circle
-            cx="200"
-            cy="200"
-            r="170"
-            fill="rgb(0, 0, 0)"
-            className="opacity-90"
-          />
+          {/* Hour markers as dots - only showing 11:45 to 12:00 region */}
+          {/* 11:45 marker (3 o'clock position on quarter circle) */}
+          <circle cx="120" cy="650" r="20" fill="black" />
           
-          {/* Hour markers */}
-          {[...Array(12)].map((_, i) => {
-            const angle = (i * 30 - 90) * (Math.PI / 180)
-            const x1 = 200 + 160 * Math.cos(angle)
-            const y1 = 200 + 160 * Math.sin(angle)
-            const x2 = 200 + 150 * Math.cos(angle)
-            const y2 = 200 + 150 * Math.sin(angle)
-            
-            return (
-              <line
-                key={i}
-                x1={x1}
-                y1={y1}
-                x2={x2}
-                y2={y2}
-                stroke={i === 0 ? 'rgb(220, 38, 38)' : 'rgb(115, 115, 115)'}
-                strokeWidth={i === 0 ? '3' : '2'}
-                strokeLinecap="round"
-              />
-            )
-          })}
+          {/* 11:50 marker */}
+          <circle cx="180" cy="550" r="20" fill="black" />
           
-          {/* Midnight label */}
-          <text
-            x="200"
-            y="45"
-            textAnchor="middle"
-            fill="rgb(239, 68, 68)"
-            fontSize="16"
-            fontWeight="bold"
-            letterSpacing="2"
-          >
-            MIDNIGHT
-          </text>
+          {/* 11:55 marker */}
+          <circle cx="250" cy="460" r="20" fill="black" />
           
-          {/* Clock hand */}
+          {/* 12:00 marker (top right) */}
+          <circle cx="330" cy="390" r="20" fill="black" />
+          
+          {/* Minute hand - pointing close to midnight */}
           <line
-            x1="200"
-            y1="200"
-            x2="200"
-            y2="60"
-            stroke="rgb(255, 255, 255)"
-            strokeWidth="3"
-            strokeLinecap="round"
+            x1="250"
+            y1="450"
+            x2="420"
+            y2="120"
+            stroke="black"
+            strokeWidth="35"
+            strokeLinecap="butt"
             style={{
               transform: `rotate(${angle}deg)`,
-              transformOrigin: '200px 200px',
-              transition: 'transform 0.5s ease-in-out'
+              transformOrigin: '250px 450px',
+              transition: 'transform 1s ease-in-out'
             }}
           />
           
-          {/* Center dot */}
-          <circle
-            cx="200"
-            cy="200"
-            r="8"
-            fill="rgb(255, 255, 255)"
+          {/* Hour hand - shorter, wider */}
+          <line
+            x1="250"
+            y1="450"
+            x2="370"
+            y2="190"
+            stroke="black"
+            strokeWidth="50"
+            strokeLinecap="butt"
+            style={{
+              transform: `rotate(${angle * 0.8}deg)`,
+              transformOrigin: '250px 450px',
+              transition: 'transform 1s ease-in-out'
+            }}
           />
           
-          {/* Danger zone arc (11:45 to 12:00) */}
-          <path
-            d="M 200 30 A 170 170 0 0 1 290 44"
-            fill="none"
-            stroke="rgb(220, 38, 38)"
-            strokeWidth="20"
-            opacity="0.3"
-          />
+          {/* Center circle */}
+          <circle cx="250" cy="450" r="25" fill="black" />
+          
+          {/* Registered trademark symbol */}
+          <text
+            x="460"
+            y="480"
+            fontSize="24"
+            fontFamily="serif"
+            fill="black"
+          >
+            ®
+          </text>
         </svg>
         
-        {/* Center time display */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-5xl md:text-6xl font-light text-white tracking-tight">
+        {/* Time display overlay */}
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center">
+          <div className="bg-black/80 backdrop-blur-sm px-8 py-4 rounded-lg border-2 border-red-600">
+            <div className="text-5xl md:text-6xl font-bold text-white tracking-tight">
               {minutesToMidnight}:{currentSeconds.toString().padStart(2, '0')}
             </div>
-            <div className="text-sm md:text-base text-neutral-400 mt-2">
+            <div className="text-sm md:text-base text-neutral-300 mt-1">
               to midnight
             </div>
           </div>
