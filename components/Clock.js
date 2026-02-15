@@ -114,7 +114,7 @@ const Clock = ({ data }) => {
             y1="200"
             x2="200"
             y2="60"
-            stroke="rgb(248, 250, 252)"
+            stroke="rgb(255, 255, 255)"
             strokeWidth="3"
             strokeLinecap="round"
             style={{
@@ -129,16 +129,16 @@ const Clock = ({ data }) => {
             cx="200"
             cy="200"
             r="8"
-            fill="rgb(248, 250, 252)"
+            fill="rgb(255, 255, 255)"
           />
           
           {/* Danger zone arc (11:45 to 12:00) */}
           <path
             d="M 200 30 A 170 170 0 0 1 290 44"
             fill="none"
-            stroke="rgb(239, 68, 68)"
+            stroke="rgb(220, 38, 38)"
             strokeWidth="20"
-            opacity="0.2"
+            opacity="0.3"
           />
         </svg>
         
