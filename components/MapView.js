@@ -9,10 +9,10 @@ const MapView = ({ data }) => {
   const [hoveredRegion, setHoveredRegion] = useState(null)
 
   const getRiskColor = (riskLevel) => {
-    if (riskLevel >= 80) return '#ef4444' // red-500
-    if (riskLevel >= 70) return '#f97316' // orange-500
-    if (riskLevel >= 60) return '#eab308' // yellow-500
-    return '#84cc16' // lime-500
+    if (riskLevel >= 80) return '#dc2626' // red-600
+    if (riskLevel >= 70) return '#ef4444' // red-500
+    if (riskLevel >= 60) return '#f87171' // red-400
+    return '#fca5a5' // red-300
   }
 
   const getRiskLabel = (riskLevel) => {
@@ -25,46 +25,46 @@ const MapView = ({ data }) => {
   return (
     <div className="space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl md:text-4xl font-light text-slate-100">Global Risk Map</h2>
-        <p className="text-slate-400 max-w-2xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-light text-white">Global Risk Map</h2>
+        <p className="text-neutral-400 max-w-2xl mx-auto">
           Regional contributions to current global risk assessment, based on AI analysis of geopolitical,
           environmental, and security factors.
         </p>
       </div>
 
       {/* Simplified World Map Visualization */}
-      <Card className="bg-slate-900 border-slate-800">
+      <Card className="bg-neutral-900 border-neutral-800">
         <CardContent className="p-8">
-          <div className="relative w-full aspect-[2/1] bg-slate-950 rounded-lg overflow-hidden">
+          <div className="relative w-full aspect-[2/1] bg-black rounded-lg overflow-hidden">
             {/* Simple SVG world map representation */}
             <svg viewBox="0 0 1000 500" className="w-full h-full">
               {/* Background */}
-              <rect width="1000" height="500" fill="rgb(2, 6, 23)" />
+              <rect width="1000" height="500" fill="rgb(0, 0, 0)" />
               
               {/* Simplified continents */}
               {/* North America */}
               <path d="M 150 120 L 180 100 L 220 110 L 250 130 L 280 150 L 270 200 L 240 230 L 200 220 L 170 180 Z" 
-                    fill="rgb(30, 41, 59)" stroke="rgb(51, 65, 85)" strokeWidth="1" />
+                    fill="rgb(38, 38, 38)" stroke="rgb(64, 64, 64)" strokeWidth="1" />
               
               {/* South America */}
               <path d="M 230 250 L 250 280 L 260 330 L 250 370 L 230 360 L 220 320 L 215 270 Z" 
-                    fill="rgb(30, 41, 59)" stroke="rgb(51, 65, 85)" strokeWidth="1" />
+                    fill="rgb(38, 38, 38)" stroke="rgb(64, 64, 64)" strokeWidth="1" />
               
               {/* Europe */}
               <path d="M 480 120 L 520 110 L 550 130 L 540 160 L 500 170 L 470 150 Z" 
-                    fill="rgb(30, 41, 59)" stroke="rgb(51, 65, 85)" strokeWidth="1" />
+                    fill="rgb(38, 38, 38)" stroke="rgb(64, 64, 64)" strokeWidth="1" />
               
               {/* Africa */}
               <path d="M 490 190 L 520 200 L 540 240 L 550 290 L 530 340 L 490 350 L 470 310 L 475 250 Z" 
-                    fill="rgb(30, 41, 59)" stroke="rgb(51, 65, 85)" strokeWidth="1" />
+                    fill="rgb(38, 38, 38)" stroke="rgb(64, 64, 64)" strokeWidth="1" />
               
               {/* Asia */}
               <path d="M 570 110 L 650 100 L 720 120 L 750 150 L 760 200 L 740 230 L 700 240 L 650 220 L 600 180 L 580 140 Z" 
-                    fill="rgb(30, 41, 59)" stroke="rgb(51, 65, 85)" strokeWidth="1" />
+                    fill="rgb(38, 38, 38)" stroke="rgb(64, 64, 64)" strokeWidth="1" />
               
               {/* Australia */}
               <path d="M 700 320 L 750 310 L 780 330 L 770 360 L 730 370 L 700 350 Z" 
-                    fill="rgb(30, 41, 59)" stroke="rgb(51, 65, 85)" strokeWidth="1" />
+                    fill="rgb(38, 38, 38)" stroke="rgb(64, 64, 64)" strokeWidth="1" />
               
               {/* Risk regions */}
               {regions?.map((region, index) => {
@@ -112,20 +112,20 @@ const MapView = ({ data }) => {
             </svg>
             
             {/* Legend */}
-            <div className="absolute bottom-4 left-4 bg-slate-900/90 backdrop-blur-sm rounded-lg p-4 border border-slate-800">
-              <h4 className="text-sm font-medium text-slate-300 mb-2">Risk Level</h4>
+            <div className="absolute bottom-4 left-4 bg-neutral-900/90 backdrop-blur-sm rounded-lg p-4 border border-neutral-800">
+              <h4 className="text-sm font-medium text-white mb-2">Risk Level</h4>
               <div className="space-y-1 text-xs">
                 <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-600"></div>
+                  <span className="text-neutral-400">Critical (80+)</span>
+                </div>
+                <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <span className="text-slate-400">Critical (80+)</span>
+                  <span className="text-neutral-400">High (70-79)</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-                  <span className="text-slate-400">High (70-79)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                  <span className="text-slate-400">Elevated (60-69)</span>
+                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                  <span className="text-neutral-400">Elevated (60-69)</span>
                 </div>
               </div>
             </div>
@@ -138,15 +138,15 @@ const MapView = ({ data }) => {
         {regions?.map((region) => (
           <Card 
             key={region.id} 
-            className={`bg-slate-900 border-slate-800 transition-all cursor-pointer ${
-              hoveredRegion === region.id ? 'border-slate-600 shadow-lg' : 'hover:border-slate-700'
+            className={`bg-neutral-900 border-neutral-800 transition-all cursor-pointer ${
+              hoveredRegion === region.id ? 'border-red-600 shadow-lg shadow-red-900/20' : 'hover:border-neutral-700'
             }`}
             onMouseEnter={() => setHoveredRegion(region.id)}
             onMouseLeave={() => setHoveredRegion(null)}
           >
             <CardHeader>
               <div className="flex items-start justify-between">
-                <CardTitle className="text-lg text-slate-100">{region.name}</CardTitle>
+                <CardTitle className="text-lg text-white">{region.name}</CardTitle>
                 <Badge 
                   variant="outline" 
                   style={{ backgroundColor: `${getRiskColor(region.riskLevel)}20`, borderColor: getRiskColor(region.riskLevel) }}
@@ -157,10 +157,10 @@ const MapView = ({ data }) => {
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-slate-400 leading-relaxed">{region.description}</p>
+              <p className="text-sm text-neutral-400 leading-relaxed">{region.description}</p>
               <div className="mt-3 text-sm">
-                <span className="text-slate-500">Risk Score: </span>
-                <span className="text-slate-300 font-medium">{region.riskLevel}/100</span>
+                <span className="text-neutral-500">Risk Score: </span>
+                <span className="text-white font-medium">{region.riskLevel}/100</span>
               </div>
             </CardContent>
           </Card>
