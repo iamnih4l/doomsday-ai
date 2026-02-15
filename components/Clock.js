@@ -157,7 +157,7 @@ const Clock = ({ data }) => {
 
       {/* Status Information */}
       <div className="text-center space-y-4 w-full">
-        <h1 className="text-3xl md:text-4xl font-light text-slate-100 tracking-wide">
+        <h1 className="text-3xl md:text-4xl font-light text-white tracking-wide">
           {status}
         </h1>
         
@@ -166,12 +166,12 @@ const Clock = ({ data }) => {
             Confidence: {confidence}
           </Badge>
           
-          <div className="text-sm text-slate-400">
+          <div className="text-sm text-neutral-400">
             Last updated: {formatDate(lastUpdated)}
           </div>
         </div>
         
-        <p className="text-slate-400 text-sm max-w-xl mx-auto leading-relaxed">
+        <p className="text-neutral-400 text-sm max-w-xl mx-auto leading-relaxed">
           The Global Risk Clock represents a scientific assessment of existential threats to humanity,
           measured in minutes and seconds to midnight.
         </p>
