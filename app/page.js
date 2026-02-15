@@ -106,7 +106,7 @@ function App() {
 
           {/* Scroll Indicator */}
           <div className="animate-bounce mt-12">
-            <ChevronDown className="w-6 h-6 text-slate-500" />
+            <ChevronDown className="w-6 h-6 text-neutral-500" />
           </div>
         </section>
 
