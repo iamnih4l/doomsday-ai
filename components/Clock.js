@@ -38,10 +38,10 @@ const Clock = ({ data }) => {
 
   const getConfidenceColor = (conf) => {
     switch (conf.toLowerCase()) {
-      case 'high': return 'bg-emerald-900 text-emerald-200 border-emerald-700'
-      case 'medium': return 'bg-amber-900 text-amber-200 border-amber-700'
-      case 'low': return 'bg-slate-700 text-slate-300 border-slate-600'
-      default: return 'bg-slate-800 text-slate-300 border-slate-700'
+      case 'high': return 'bg-red-900 text-white border-red-700'
+      case 'medium': return 'bg-neutral-700 text-white border-neutral-600'
+      case 'low': return 'bg-neutral-800 text-neutral-400 border-neutral-700'
+      default: return 'bg-neutral-900 text-white border-neutral-700'
     }
   }
 
