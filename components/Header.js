@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
+import { GradientButton } from '@/components/ui/gradient-button'
 import { Info, Clock } from 'lucide-react'
 
 const Header = () => {
@@ -27,13 +27,13 @@ const Header = () => {
           <nav className="flex items-center gap-4">
             <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
               <DialogTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  className="text-neutral-300 hover:text-white hover:bg-neutral-900"
+                <GradientButton
+                  variant="variant"
+                  className="min-w-0 px-6 py-3 text-sm"
                 >
                   <Info className="w-4 h-4 mr-2" />
                   About
-                </Button>
+                </GradientButton>
               </DialogTrigger>
               <DialogContent className="bg-neutral-900 border-neutral-800 text-white max-w-2xl">
                 <DialogHeader>

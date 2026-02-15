@@ -8,7 +8,9 @@ import MapView from '@/components/MapView'
 import Timeline from '@/components/Timeline'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { Button } from '@/components/ui/button'
+import { GradientButton } from '@/components/ui/gradient-button'
+import { GlowingEffect } from '@/components/ui/glowing-effect'
+import { EtherealShadow } from '@/components/ui/ethereal-shadow'
 import { ChevronDown } from 'lucide-react'
 
 function App() {
@@ -25,34 +27,46 @@ function App() {
     fetchAllData()
   }, [])
 
-  const fetchAllData = async () => {
-    try {
-      setLoading(true)
-      
-      const [clockRes, riskRes, explanationsRes, timelineRes, mapRes] = await Promise.all([
-        fetch('/api/clock'),
-        fetch('/api/risk-breakdown'),
-        fetch('/api/explanations'),
-        fetch('/api/timeline'),
-        fetch('/api/map-data')
-      ])
+  const fetchAllData = () => {
+    setLoading(true);
 
-      const clockData = await clockRes.json()
-      const riskData = await riskRes.json()
-      const explanationsData = await explanationsRes.json()
-      const timelineData = await timelineRes.json()
-      const mapData = await mapRes.json()
+    // 1. Clock Data
+    fetch('/api/clock/current', { cache: 'no-store' })
+      .then(res => res.json())
+      .then(data => {
+        setClockData({
+          ...data,
+          minutesToMidnight: Math.floor((data.secondsToMidnight || 90) / 60),
+          secondsToMidnight: (data.secondsToMidnight || 90) % 60
+        });
+      })
+      .catch(e => console.error("Clock fetch failed", e));
 
-      setClockData(clockData)
-      setRiskData(riskData)
-      setExplanations(explanationsData)
-      setTimeline(timelineData)
-      setMapData(mapData)
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    } finally {
-      setLoading(false)
-    }
+    // 2. Risk Data
+    fetch('/api/risk/breakdown', { cache: 'no-store' })
+      .then(res => res.json())
+      .then(setRiskData)
+      .catch(e => console.error("Risk fetch failed", e));
+
+    // 3. Explanations
+    fetch('/api/clock/explanation/latest', { cache: 'no-store' })
+      .then(res => res.json())
+      .then(setExplanations)
+      .catch(e => console.error("Explanation fetch failed", e));
+
+    // 4. Timeline
+    fetch('/api/clock/history', { cache: 'no-store' })
+      .then(res => res.json())
+      .then(setTimeline)
+      .catch(e => console.error("Timeline fetch failed", e));
+
+    // 5. Map Data
+    fetch('/api/map-data')
+      .then(res => res.json())
+      .then(setMapData)
+      .catch(e => console.error("Map fetch failed", e));
+
+    setLoading(false);
   }
 
   const scrollToSection = (sectionId) => {
@@ -62,46 +76,56 @@ function App() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-white text-xl animate-pulse">Loading Global Risk Assessment...</div>
-      </div>
-    )
-  }
+  // Removed blocking loading state to allow progressive rendering
 
   return (
     <div className="min-h-screen bg-black text-white">
       <Header />
-      
+
+      {/* Ethereal Shadow hero banner */}
+      <section className="w-full h-[28vh] min-h-[200px] max-h-[320px]">
+        <EtherealShadow
+          color="rgba(20, 20, 20, 1)"
+          animation={{ scale: 100, speed: 90 }}
+          noise={{ opacity: 0.6, scale: 1.2 }}
+          sizing="fill"
+          title="Global Risk Clock"
+          className="text-white"
+        />
+      </section>
+
       {/* Hero Section - Main Clock */}
       <main className="container mx-auto px-4 py-12 md:py-20">
         <section className="flex flex-col items-center justify-center min-h-[80vh] space-y-8">
           {clockData && <Clock data={clockData} />}
-          
-          {/* CTA Buttons */}
-          <div className="flex flex-wrap gap-4 justify-center mt-8">
-            <Button
-              onClick={() => scrollToSection('explanation')}
-              variant="outline"
-              className="bg-neutral-900 border-neutral-700 text-white hover:bg-red-600 hover:border-red-600 transition-colors"
-            >
-              Why did the clock move?
-            </Button>
-            <Button
-              onClick={() => setShowRiskBreakdown(!showRiskBreakdown)}
-              variant="outline"
-              className="bg-neutral-900 border-neutral-700 text-white hover:bg-red-600 hover:border-red-600 transition-colors"
-            >
-              View risk breakdown
-            </Button>
-            <Button
-              onClick={() => setShowTimeline(!showTimeline)}
-              variant="outline"
-              className="bg-neutral-900 border-neutral-700 text-white hover:bg-red-600 hover:border-red-600 transition-colors"
-            >
-              Historical timeline
-            </Button>
+
+          {/* CTA Buttons - with glowing border */}
+          <div className="relative rounded-[1.25rem] border-[0.75px] border-neutral-800 p-2 md:rounded-[1.5rem] md:p-3">
+            <GlowingEffect
+              spread={40}
+              glow
+              disabled={false}
+              proximity={64}
+              inactiveZone={0.01}
+              borderWidth={2}
+            />
+            <div className="relative flex flex-wrap gap-4 justify-center rounded-xl border-[0.75px] border-neutral-800 bg-neutral-900/50 p-6 md:p-8">
+              <GradientButton onClick={() => scrollToSection('explanation')}>
+                Why did the clock move?
+              </GradientButton>
+              <GradientButton
+                variant="variant"
+                onClick={() => setShowRiskBreakdown(!showRiskBreakdown)}
+              >
+                View risk breakdown
+              </GradientButton>
+              <GradientButton
+                variant="variant"
+                onClick={() => setShowTimeline(!showTimeline)}
+              >
+                Historical timeline
+              </GradientButton>
+            </div>
           </div>
 
           {/* Scroll Indicator */}

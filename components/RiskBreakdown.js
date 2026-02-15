@@ -3,6 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
+import { GlowingEffect } from '@/components/ui/glowing-effect'
 import { TrendingUp, TrendingDown, Minus, Radiation, CloudRain, Activity, Cpu, Globe } from 'lucide-react'
 
 const iconMap = {
@@ -42,7 +43,16 @@ const RiskBreakdown = ({ data }) => {
           const Icon = iconMap[domain.icon] || Globe
           
           return (
-            <Card key={domain.id} className="bg-neutral-900 border-neutral-800 hover:border-red-600 transition-colors">
+            <div key={domain.id} className="relative rounded-[1.25rem] border-[0.75px] border-neutral-800 p-2 md:rounded-[1.5rem] md:p-3">
+              <GlowingEffect
+                spread={40}
+                glow
+                disabled={false}
+                proximity={48}
+                inactiveZone={0.01}
+                borderWidth={2}
+              />
+              <Card className="relative bg-neutral-900 border-neutral-800 hover:border-red-600 transition-colors rounded-xl border-[0.75px]">
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
@@ -81,6 +91,7 @@ const RiskBreakdown = ({ data }) => {
                 </p>
               </CardContent>
             </Card>
+            </div>
           )
         })}
       </div>

@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { GlowingEffect } from '@/components/ui/glowing-effect'
 import { ChevronDown, TrendingUp, TrendingDown } from 'lucide-react'
 import { useState } from 'react'
 
@@ -66,8 +67,17 @@ const Timeline = ({ data }) => {
                 <div className={`ml-16 md:ml-0 w-full md:w-1/2 ${
                   isLeft ? 'md:pr-12' : 'md:pl-12'
                 }`}>
+                  <div className="relative rounded-[1.25rem] border-[0.75px] border-neutral-800 p-2 md:rounded-[1.5rem] md:p-3">
+                    <GlowingEffect
+                      spread={32}
+                      glow
+                      disabled={false}
+                      proximity={40}
+                      inactiveZone={0.05}
+                      borderWidth={1}
+                    />
                   <Card 
-                    className="bg-neutral-900 border-neutral-800 hover:border-neutral-700 transition-all cursor-pointer"
+                    className="relative bg-neutral-900 border-neutral-800 hover:border-neutral-700 transition-all cursor-pointer rounded-xl border-[0.75px]"
                     onClick={() => setExpandedEvent(isExpanded ? null : event.id)}
                   >
                     <CardHeader>
@@ -102,6 +112,7 @@ const Timeline = ({ data }) => {
                       </CardContent>
                     )}
                   </Card>
+                  </div>
                 </div>
               </div>
             )

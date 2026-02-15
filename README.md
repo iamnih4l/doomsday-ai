@@ -35,9 +35,9 @@ The Global Risk Clock is a production-ready frontend web application that provid
    - Confidence level indicators
 
 4. **Global Risk Map**
-   - Interactive world map with regional risk hotspots
-   - Hover interactions showing region details
-   - Color-coded risk intensity
+   - Real-time hotspots based on news analysis
+   - Gemini AI extracts location data from risk reports
+   - Color-coded risk intensity based on real-time events
    - Region-specific risk scores and descriptions
 
 5. **Historical Timeline**
@@ -106,6 +106,13 @@ cd app
 ```bash
 yarn install
 ```
+
+3. Configure Environment:
+   - Copy `.env.example` to `.env`
+   - Set requests keys:
+     - `MONGODB_URI`: Connection string for MongoDB
+     - `ADMIN_API_KEY`: Secret key for Admin API access
+     - `GEMINI_API_KEY`: Google Gemini API Key (Get from aistudio.google.com)
 
 3. Run the development server:
 ```bash

@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { GlowingEffect } from '@/components/ui/glowing-effect'
+import { Globe, GLOBE_CONFIG } from '@/components/ui/globe'
 
 const MapView = ({ data }) => {
   const { regions } = data
@@ -32,113 +34,66 @@ const MapView = ({ data }) => {
         </p>
       </div>
 
-      {/* Simplified World Map Visualization */}
-      <Card className="bg-neutral-900 border-neutral-800">
-        <CardContent className="p-8">
-          <div className="relative w-full aspect-[2/1] bg-black rounded-lg overflow-hidden">
-            {/* Simple SVG world map representation */}
-            <svg viewBox="0 0 1000 500" className="w-full h-full">
-              {/* Background */}
-              <rect width="1000" height="500" fill="rgb(0, 0, 0)" />
-              
-              {/* Simplified continents */}
-              {/* North America */}
-              <path d="M 150 120 L 180 100 L 220 110 L 250 130 L 280 150 L 270 200 L 240 230 L 200 220 L 170 180 Z" 
-                    fill="rgb(38, 38, 38)" stroke="rgb(64, 64, 64)" strokeWidth="1" />
-              
-              {/* South America */}
-              <path d="M 230 250 L 250 280 L 260 330 L 250 370 L 230 360 L 220 320 L 215 270 Z" 
-                    fill="rgb(38, 38, 38)" stroke="rgb(64, 64, 64)" strokeWidth="1" />
-              
-              {/* Europe */}
-              <path d="M 480 120 L 520 110 L 550 130 L 540 160 L 500 170 L 470 150 Z" 
-                    fill="rgb(38, 38, 38)" stroke="rgb(64, 64, 64)" strokeWidth="1" />
-              
-              {/* Africa */}
-              <path d="M 490 190 L 520 200 L 540 240 L 550 290 L 530 340 L 490 350 L 470 310 L 475 250 Z" 
-                    fill="rgb(38, 38, 38)" stroke="rgb(64, 64, 64)" strokeWidth="1" />
-              
-              {/* Asia */}
-              <path d="M 570 110 L 650 100 L 720 120 L 750 150 L 760 200 L 740 230 L 700 240 L 650 220 L 600 180 L 580 140 Z" 
-                    fill="rgb(38, 38, 38)" stroke="rgb(64, 64, 64)" strokeWidth="1" />
-              
-              {/* Australia */}
-              <path d="M 700 320 L 750 310 L 780 330 L 770 360 L 730 370 L 700 350 Z" 
-                    fill="rgb(38, 38, 38)" stroke="rgb(64, 64, 64)" strokeWidth="1" />
-              
-              {/* Risk regions */}
-              {regions?.map((region, index) => {
-                const x = region.coordinates.x * 10
-                const y = region.coordinates.y * 10
-                const isHovered = hoveredRegion === region.id
-                
-                return (
-                  <g key={region.id}>
-                    <circle
-                      cx={x}
-                      cy={y}
-                      r={isHovered ? 25 : 20}
-                      fill={getRiskColor(region.riskLevel)}
-                      opacity={isHovered ? 0.9 : 0.6}
-                      className="transition-all duration-200 cursor-pointer"
-                      onMouseEnter={() => setHoveredRegion(region.id)}
-                      onMouseLeave={() => setHoveredRegion(null)}
-                    />
-                    <circle
-                      cx={x}
-                      cy={y}
-                      r={30}
-                      fill="none"
-                      stroke={getRiskColor(region.riskLevel)}
-                      strokeWidth={isHovered ? 2 : 1}
-                      opacity={0.3}
-                      className="transition-all duration-200"
-                    />
-                    {isHovered && (
-                      <text
-                        x={x}
-                        y={y - 35}
-                        textAnchor="middle"
-                        fill="white"
-                        fontSize="14"
-                        fontWeight="bold"
-                      >
-                        {region.name}
-                      </text>
-                    )}
-                  </g>
-                )
-              })}
-            </svg>
-            
-            {/* Legend */}
-            <div className="absolute bottom-4 left-4 bg-neutral-900/90 backdrop-blur-sm rounded-lg p-4 border border-neutral-800">
-              <h4 className="text-sm font-medium text-white mb-2">Risk Level</h4>
-              <div className="space-y-1 text-xs">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-600"></div>
-                  <span className="text-neutral-400">Critical (80+)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <span className="text-neutral-400">High (70-79)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                  <span className="text-neutral-400">Elevated (60-69)</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      {/* 3D Globe - primary map visualization */}
+      <div className="relative rounded-[1.25rem] border-[0.75px] border-neutral-800 p-2 md:rounded-[1.5rem] md:p-3">
+        <GlowingEffect
+          spread={40}
+          glow
+          disabled={false}
+          proximity={64}
+          inactiveZone={0.01}
+          borderWidth={2}
+        />
+        <Card className="relative bg-neutral-900 border-neutral-800 rounded-xl border-[0.75px] overflow-hidden">
+          <CardContent className="relative flex min-h-[400px] max-h-[560px] w-full items-center justify-center overflow-hidden px-4 pb-16 pt-8 md:pb-24 md:px-8">
+            <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-white to-neutral-500/80 bg-clip-text text-center text-6xl font-semibold leading-none text-transparent md:text-7xl">
+              Global Risk
+            </span>
+            <Globe
+              className="top-14 md:top-20"
+              config={{
+                ...GLOBE_CONFIG,
+                dark: 1,
+                baseColor: [0.15, 0.15, 0.2],
+                markerColor: [220 / 255, 38 / 255, 38 / 255],
+                glowColor: [0.4, 0.1, 0.1],
+              }}
+            />
+            <div className="pointer-events-none absolute inset-0 h-full bg-[radial-gradient(circle_at_50%_200%,rgba(0,0,0,0.4),rgba(255,255,255,0))]" />
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Risk level legend */}
+      <div className="flex flex-wrap justify-center gap-6 rounded-lg border border-neutral-800 bg-neutral-900/50 px-6 py-4">
+        <div className="flex items-center gap-2">
+          <div className="h-3 w-3 rounded-full bg-red-600" />
+          <span className="text-sm text-neutral-400">Critical (80+)</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="h-3 w-3 rounded-full bg-red-500" />
+          <span className="text-sm text-neutral-400">High (70-79)</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="h-3 w-3 rounded-full bg-red-400" />
+          <span className="text-sm text-neutral-400">Elevated (60-69)</span>
+        </div>
+      </div>
 
       {/* Region Details */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {regions?.map((region) => (
+          <div key={region.id} className="relative rounded-[1.25rem] border-[0.75px] border-neutral-800 p-2 md:rounded-[1.5rem] md:p-3">
+            <GlowingEffect
+              spread={32}
+              glow
+              disabled={false}
+              proximity={48}
+              inactiveZone={0.05}
+              borderWidth={1}
+            />
           <Card 
-            key={region.id} 
-            className={`bg-neutral-900 border-neutral-800 transition-all cursor-pointer ${
+            className={`relative bg-neutral-900 border-neutral-800 transition-all cursor-pointer rounded-xl border-[0.75px] ${
               hoveredRegion === region.id ? 'border-red-600 shadow-lg shadow-red-900/20' : 'hover:border-neutral-700'
             }`}
             onMouseEnter={() => setHoveredRegion(region.id)}
@@ -164,6 +119,7 @@ const MapView = ({ data }) => {
               </div>
             </CardContent>
           </Card>
+          </div>
         ))}
       </div>
     </div>
