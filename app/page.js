@@ -1,45 +1,143 @@
 'use client'
 
-import { useEffect } from "react";
-
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await fetch('/api/');
-      const data = await response.json();
-      console.log(data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" alt="Emergent" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+import { useState, useEffect } from 'react'
+import Clock from '@/components/Clock'
+import RiskBreakdown from '@/components/RiskBreakdown'
+import AIExplanation from '@/components/AIExplanation'
+import MapView from '@/components/MapView'
+import Timeline from '@/components/Timeline'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import { Button } from '@/components/ui/button'
+import { ChevronDown } from 'lucide-react'
 
 function App() {
+  const [clockData, setClockData] = useState(null)
+  const [riskData, setRiskData] = useState(null)
+  const [explanations, setExplanations] = useState(null)
+  const [timeline, setTimeline] = useState(null)
+  const [mapData, setMapData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [showRiskBreakdown, setShowRiskBreakdown] = useState(false)
+  const [showTimeline, setShowTimeline] = useState(false)
+
+  useEffect(() => {
+    fetchAllData()
+  }, [])
+
+  const fetchAllData = async () => {
+    try {
+      setLoading(true)
+      
+      const [clockRes, riskRes, explanationsRes, timelineRes, mapRes] = await Promise.all([
+        fetch('/api/clock'),
+        fetch('/api/risk-breakdown'),
+        fetch('/api/explanations'),
+        fetch('/api/timeline'),
+        fetch('/api/map-data')
+      ])
+
+      const clockData = await clockRes.json()
+      const riskData = await riskRes.json()
+      const explanationsData = await explanationsRes.json()
+      const timelineData = await timelineRes.json()
+      const mapData = await mapRes.json()
+
+      setClockData(clockData)
+      setRiskData(riskData)
+      setExplanations(explanationsData)
+      setTimeline(timelineData)
+      setMapData(mapData)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-slate-300 text-xl animate-pulse">Loading Global Risk Assessment...</div>
+      </div>
+    )
+  }
+
   return (
-    <div className="App">
-      <Home />
+    <div className="min-h-screen bg-slate-950 text-slate-100">
+      <Header />
+      
+      {/* Hero Section - Main Clock */}
+      <main className="container mx-auto px-4 py-12 md:py-20">
+        <section className="flex flex-col items-center justify-center min-h-[80vh] space-y-8">
+          {clockData && <Clock data={clockData} />}
+          
+          {/* CTA Buttons */}
+          <div className="flex flex-wrap gap-4 justify-center mt-8">
+            <Button
+              onClick={() => scrollToSection('explanation')}
+              variant="outline"
+              className="bg-slate-900 border-slate-700 text-slate-200 hover:bg-slate-800 hover:border-slate-600"
+            >
+              Why did the clock move?
+            </Button>
+            <Button
+              onClick={() => setShowRiskBreakdown(!showRiskBreakdown)}
+              variant="outline"
+              className="bg-slate-900 border-slate-700 text-slate-200 hover:bg-slate-800 hover:border-slate-600"
+            >
+              View risk breakdown
+            </Button>
+            <Button
+              onClick={() => setShowTimeline(!showTimeline)}
+              variant="outline"
+              className="bg-slate-900 border-slate-700 text-slate-200 hover:bg-slate-800 hover:border-slate-600"
+            >
+              Historical timeline
+            </Button>
+          </div>
+
+          {/* Scroll Indicator */}
+          <div className="animate-bounce mt-12">
+            <ChevronDown className="w-6 h-6 text-slate-500" />
+          </div>
+        </section>
+
+        {/* Risk Breakdown Section */}
+        {showRiskBreakdown && riskData && (
+          <section id="risk-breakdown" className="py-16">
+            <RiskBreakdown data={riskData} />
+          </section>
+        )}
+
+        {/* AI Explanation Section */}
+        <section id="explanation" className="py-16">
+          {explanations && <AIExplanation data={explanations} />}
+        </section>
+
+        {/* Map View Section */}
+        <section id="map" className="py-16">
+          {mapData && <MapView data={mapData} />}
+        </section>
+
+        {/* Timeline Section */}
+        {showTimeline && timeline && (
+          <section id="timeline" className="py-16">
+            <Timeline data={timeline} />
+          </section>
+        )}
+      </main>
+
+      <Footer />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
