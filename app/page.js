@@ -64,14 +64,14 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <div className="text-slate-300 text-xl animate-pulse">Loading Global Risk Assessment...</div>
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-white text-xl animate-pulse">Loading Global Risk Assessment...</div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-black text-white">
       <Header />
       
       {/* Hero Section - Main Clock */}
