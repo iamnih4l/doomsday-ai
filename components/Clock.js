@@ -88,7 +88,7 @@ const Clock = ({ data }) => {
                 y1={y1}
                 x2={x2}
                 y2={y2}
-                stroke={i === 0 ? 'rgb(239, 68, 68)' : 'rgb(100, 116, 139)'}
+                stroke={i === 0 ? 'rgb(220, 38, 38)' : 'rgb(115, 115, 115)'}
                 strokeWidth={i === 0 ? '3' : '2'}
                 strokeLinecap="round"
               />
