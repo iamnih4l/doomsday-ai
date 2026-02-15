@@ -145,10 +145,10 @@ const Clock = ({ data }) => {
         {/* Center time display */}
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
-            <div className="text-5xl md:text-6xl font-light text-slate-100 tracking-tight">
+            <div className="text-5xl md:text-6xl font-light text-white tracking-tight">
               {minutesToMidnight}:{currentSeconds.toString().padStart(2, '0')}
             </div>
-            <div className="text-sm md:text-base text-slate-400 mt-2">
+            <div className="text-sm md:text-base text-neutral-400 mt-2">
               to midnight
             </div>
           </div>
