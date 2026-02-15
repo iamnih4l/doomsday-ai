@@ -84,21 +84,21 @@ function App() {
             <Button
               onClick={() => scrollToSection('explanation')}
               variant="outline"
-              className="bg-slate-900 border-slate-700 text-slate-200 hover:bg-slate-800 hover:border-slate-600"
+              className="bg-neutral-900 border-neutral-700 text-white hover:bg-red-600 hover:border-red-600 transition-colors"
             >
               Why did the clock move?
             </Button>
             <Button
               onClick={() => setShowRiskBreakdown(!showRiskBreakdown)}
               variant="outline"
-              className="bg-slate-900 border-slate-700 text-slate-200 hover:bg-slate-800 hover:border-slate-600"
+              className="bg-neutral-900 border-neutral-700 text-white hover:bg-red-600 hover:border-red-600 transition-colors"
             >
               View risk breakdown
             </Button>
             <Button
               onClick={() => setShowTimeline(!showTimeline)}
               variant="outline"
-              className="bg-slate-900 border-slate-700 text-slate-200 hover:bg-slate-800 hover:border-slate-600"
+              className="bg-neutral-900 border-neutral-700 text-white hover:bg-red-600 hover:border-red-600 transition-colors"
             >
               Historical timeline
             </Button>
