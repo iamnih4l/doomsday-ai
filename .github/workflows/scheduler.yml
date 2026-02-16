@@ -11,11 +11,11 @@ jobs:
     steps:
       - name: Trigger News Ingestion (Every 10 mins)
         run: |
-          curl -X POST ${{ secrets.VERCEL_PROJECT_URL }}/api/news/ingest \
+          curl -f -X POST ${{ secrets.VERCEL_PROJECT_URL }}/api/news/ingest \
           -H "x-admin-key: ${{ secrets.ADMIN_API_KEY }}"
 
       - name: Trigger AI Evaluation (Runs every 10 mins, effectively)
         # We hit this every 10 mins too. The AI service will just say "no new risks" if there are none.
         run: |
-          curl -X POST ${{ secrets.VERCEL_PROJECT_URL }}/api/ai/evaluate \
+          curl -f -X POST ${{ secrets.VERCEL_PROJECT_URL }}/api/ai/evaluate \
           -H "x-admin-key: ${{ secrets.ADMIN_API_KEY }}"
