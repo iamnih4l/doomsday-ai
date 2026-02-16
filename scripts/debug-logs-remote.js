@@ -2,7 +2,7 @@ const axios = require('axios');
 
 async function debugLogs() {
     try {
-        const response = await axios.get('https://doomsday-ai-lzee.vercel.app/api/logs?limit=10', {
+        const response = await axios.get('https://doomsday-nine.vercel.app/api/logs?limit=10', {
             headers: {
                 'x-admin-key': 'iammohammednihal_andiwanttocreate_worldchangintech34441'
             }
