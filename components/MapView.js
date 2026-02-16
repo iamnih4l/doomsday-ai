@@ -57,6 +57,10 @@ const MapView = ({ data }) => {
                 baseColor: [0.15, 0.15, 0.2],
                 markerColor: [220 / 255, 38 / 255, 38 / 255],
                 glowColor: [0.4, 0.1, 0.1],
+                markers: regions?.map(r => ({
+                  location: [r.coordinates.y, r.coordinates.x], // cobe uses [lat, lng]
+                  size: 0.05 + (r.riskLevel / 200) // Scale size by risk level (0.05 to ~0.55)
+                })) || []
               }}
             />
             <div className="pointer-events-none absolute inset-0 h-full bg-[radial-gradient(circle_at_50%_200%,rgba(0,0,0,0.4),rgba(255,255,255,0))]" />
@@ -92,33 +96,32 @@ const MapView = ({ data }) => {
               inactiveZone={0.05}
               borderWidth={1}
             />
-          <Card 
-            className={`relative bg-neutral-900 border-neutral-800 transition-all cursor-pointer rounded-xl border-[0.75px] ${
-              hoveredRegion === region.id ? 'border-red-600 shadow-lg shadow-red-900/20' : 'hover:border-neutral-700'
-            }`}
-            onMouseEnter={() => setHoveredRegion(region.id)}
-            onMouseLeave={() => setHoveredRegion(null)}
-          >
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <CardTitle className="text-lg text-white">{region.name}</CardTitle>
-                <Badge 
-                  variant="outline" 
-                  style={{ backgroundColor: `${getRiskColor(region.riskLevel)}20`, borderColor: getRiskColor(region.riskLevel) }}
-                  className="text-white"
-                >
-                  {getRiskLabel(region.riskLevel)}
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-neutral-400 leading-relaxed">{region.description}</p>
-              <div className="mt-3 text-sm">
-                <span className="text-neutral-500">Risk Score: </span>
-                <span className="text-white font-medium">{region.riskLevel}/100</span>
-              </div>
-            </CardContent>
-          </Card>
+            <Card
+              className={`relative bg-neutral-900 border-neutral-800 transition-all cursor-pointer rounded-xl border-[0.75px] ${hoveredRegion === region.id ? 'border-red-600 shadow-lg shadow-red-900/20' : 'hover:border-neutral-700'
+                }`}
+              onMouseEnter={() => setHoveredRegion(region.id)}
+              onMouseLeave={() => setHoveredRegion(null)}
+            >
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <CardTitle className="text-lg text-white">{region.name}</CardTitle>
+                  <Badge
+                    variant="outline"
+                    style={{ backgroundColor: `${getRiskColor(region.riskLevel)}20`, borderColor: getRiskColor(region.riskLevel) }}
+                    className="text-white"
+                  >
+                    {getRiskLabel(region.riskLevel)}
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-neutral-400 leading-relaxed">{region.description}</p>
+                <div className="mt-3 text-sm">
+                  <span className="text-neutral-500">Risk Score: </span>
+                  <span className="text-white font-medium">{region.riskLevel}/100</span>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         ))}
       </div>
