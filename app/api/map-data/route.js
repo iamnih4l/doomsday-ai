@@ -18,6 +18,21 @@ export async function GET() {
             };
         };
 
+        // Helper to extract a fallback continent or country name deterministically
+        const LOCATIONS = [
+            'Middle East', 'Ukraine', 'Russia', 'Israel', 'Gaza', 'China', 'Taiwan',
+            'USA', 'Europe', 'Africa', 'Asia', 'South America', 'North America', 'Pacific'
+        ];
+
+        const extractLocation = (text) => {
+            if (!text) return 'Global Context';
+            const upper = text.toUpperCase();
+            for (const loc of LOCATIONS) {
+                if (upper.includes(loc.toUpperCase())) return loc;
+            }
+            return 'Global Context';
+        };
+
         // Fetch recent risks (last 24 hours)
         const recentRisks = await RiskInput.find({
             timestamp: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) }
@@ -25,10 +40,13 @@ export async function GET() {
 
         // Map to frontend format
         const regions = recentRisks.map(risk => {
-            const coords = risk.coordinates?.lat ? risk.coordinates : getStableCoords(risk.source);
+            const combinedText = `${risk.source || ''} ${risk.description || ''}`;
+            const locationName = extractLocation(combinedText);
+            const coords = risk.coordinates?.lat ? risk.coordinates : getStableCoords(combinedText);
+
             return {
                 id: risk._id.toString(),
-                name: (risk.source || "Global Alert").split(':')[0],
+                name: locationName,
                 riskLevel: risk.severity || 50, // UI minimum visibility
                 description: risk.description?.substring(0, 100) + "...",
                 coordinates: { x: coords.lng, y: coords.lat }
