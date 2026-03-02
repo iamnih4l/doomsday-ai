@@ -19,6 +19,31 @@ const ClockStateSchema = new mongoose.Schema({
     },
     confidence: {
         type: String, // "High", "Medium", "Low"
+    },
+    // New mathematical modeling fields
+    global_index: {
+        type: Number,
+        default: 0,
+    },
+    previous_global_index: {
+        type: Number,
+        default: 0,
+    },
+    daily_movement_total: {
+        type: Number,
+        default: 0,
+    },
+    domain_scores: {
+        // Storing smoothed scores S_d(t) for tracking
+        Nuclear: { type: Number, default: 0 },
+        Climate: { type: Number, default: 0 },
+        Biosecurity: { type: Number, default: 0 }, // Also called Pandemic
+        AI: { type: Number, default: 0 },
+        Geopolitical: { type: Number, default: 0 }
+    },
+    last_run_timestamp: {
+        type: Date,
+        default: Date.now,
     }
 });
 

@@ -2,7 +2,6 @@
 
 [![Vercel Deploy](https://therealsujitk-vercel-badge.vercel.app/?app=doomsday-ai-lzee)](https://doomsday-ai-lzee.vercel.app/)
 [![Autonomous Scheduler](https://github.com/iamnih4l/doomsday-ai/actions/workflows/scheduler.yml/badge.svg)](https://github.com/iamnih4l/doomsday-ai/actions)
-[![Powerd By Gemini](https://img.shields.io/badge/AI-Gemini%201.5%20Flash-blue?logo=google-gemini)](https://deepmind.google/technologies/gemini/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > **"What time is it?"**
@@ -14,29 +13,26 @@
 
 ## 🌍 What is this?
 **Doomsday AI** is a fully autonomous, self-operating backend that monitors the state of the world 24/7.
-It uses **Artificial Intelligence (Google Gemini)** to read global news, analyze risks (Nuclear, Climate, AI, Bio), and decide if humanity is closer to or further from catastrophe.
+It uses a **mathematically-grounded deterministic risk engine** to ingest global news via OSINT feeds, analyze categorical risks (Nuclear, Climate, AI, Bio, Geopolitical), and mathematically calculate if humanity is closer to or further from catastrophe.
 
-### 🧠 How It Works (The "Brain")
-```mermaid
-graph TD
-    A[🌍 BBC/Reuters RSS Feeds] -->|Every 10 mins| B(📰 News Ingestion Service)
-    B -->|Raw Articles| C{🤖 Gemini AI Decision Engine}
-    C -->|Analyze Risk & Sentiment| D[📊 Risk Database]
-    C -->|Extract Location| E[🗺️ Global Heatmap]
-    C -->|Update Time| F[🕰️ The Doomsday Clock]
-    F -->|Real-time Update| G[💻 Live Dashboard]
-```
+### 🧠 How It Works (The "Math Engine")
+1. **Deterministic Ingestion:** Safely ingests raw XML/RSS (BBC, Al Jazeera, Guardian, NPR, DW) every 30 minutes, keeping only the last 24 hours of data.
+2. **Deduplication:** Analyzes headlines through a SHA-256 hash filter to guarantee the same news event is never double-counted.
+3. **Keyword Scoring & Time Decay:** Extrapolates raw domain scores based on strict positive and negative keyword coefficients. Older headlines decay smoothly via `Decay(t) = e^(-0.05 * Δt)`.
+4. **Logistic Normalization:** Squashes infinite headline scores into a strict 0-100 range via bounded logistic curves (`100 / (1 + e^(-0.20 * Risk))`).
+5. **Clock Movement Function:** Computes movement delta mathematically using a hyperbolic tangent `ΔC = 30 * tanh(ΔGlobal / 10)` ensuring smooth, continuous tracking without violent jumps. 
+6. **Defense Caps:** Enforces a rigid 60-second limit on aggregate daily movement.
 
 ---
 
 ## ✨ Key Features
 | Feature | Status | Description |
 | :--- | :---: | :--- |
-| ** autonomous_clock** | ✅ | Adjusts time based on real events (Wars, Treaties, etc.). |
-| ** news_scraper** | ✅ | Ingests headlines from major global sources every 10 mins. |
-| ** ai_explanation** | ✅ | Generates readable summaries "Why the clock moved". |
-| ** dynamic_map** | ✅ | Updates a live heatmap of global conflict zones. |
-| ** rate_limited** | ✅ | Protected against API abuse and spam. |
+| ** autonomous_clock** | ✅ | Adjusts time mathematically based on OSINT volume and sentiment. |
+| ** robust_scraper** | ✅ | Ingests from 5 global sources every 30 mins with hash-based deduping. |
+| ** deterministic_explanation** | ✅ | Generates hallucination-free summaries of "Why the clock moved". |
+| ** bounded_movement** | ✅ | Employs logistic, decay, and smoothing functions to prevent jitter. |
+| ** no_hallucinations** | ✅ | 100% independent of generative AI and 3rd-party API keys. |
 
 ---
 
@@ -44,12 +40,11 @@ graph TD
 
 Want your own Doomsday Clock?
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fiamnih4l%2Fdoomsday-ai&env=MONGODB_URI,GEMINI_API_KEY,ADMIN_API_KEY)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fiamnih4l%2Fdoomsday-ai&env=MONGODB_URI,ADMIN_API_KEY)
 
 **Required Environment Variables:**
 1.  `MONGODB_URI`: Connection string for MongoDB Atlas.
-2.  `GEMINI_API_KEY`: Get it from [Google AI Studio](https://aistudio.google.com/).
-3.  `ADMIN_API_KEY`: A secure password you create to protect admin routes.
+2.  `ADMIN_API_KEY`: A secure password you create to protect admin routes.
 
 ---
 
@@ -69,7 +64,6 @@ npm install
 Create a `.env.local` file:
 ```properties
 MONGODB_URI=mongodb+srv://...
-GEMINI_API_KEY=AIzaSy...
 ADMIN_API_KEY=secret123
 ```
 
@@ -78,10 +72,10 @@ ADMIN_API_KEY=secret123
 npm run dev
 ```
 
-### 4. Manually Trigger AI
-Since corn jobs don't run automatically on localhost:
+### 4. Manually Trigger Engine
 ```bash
-npm run cron:news    # Fetches news
+npm run cron:news    # Fetches and ingests news
+npm run cron:ai      # Evaluates mathematically and moves clock
 ```
 
 </details>
@@ -99,18 +93,20 @@ Returns the current time and risk level.
 ```json
 {
   "secondsToMidnight": 90,
-  "riskLevel": "Critical",
-  "primaryFactors": ["Nuclear Escalation", "AI Safety"]
+  "status": "Critical",
+  "confidence": "High",
+  "reasonChange": "The clock moved 12 seconds closer to midnight due to shifting indicators in..."
 }
 ```
 
 ### `GET /risk/breakdown`
-Returns the score (0-100) for each risk category.
+Returns the deterministic smoothed score (0-100) for each risk category.
 ```json
 {
-  "Nuclear": 85,
-  "Climate": 70,
-  "AI": 60
+  "domains": [
+    { "id": "nuclear", "score": 85 },
+    { "id": "climate", "score": 70 }
+  ]
 }
 ```
 
