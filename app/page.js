@@ -3,9 +3,7 @@
 
 import { useState, useEffect } from 'react'
 import Clock from '@/components/Clock'
-import RiskBreakdown from '@/components/RiskBreakdown'
 import AIExplanation from '@/components/AIExplanation'
-import MapView from '@/components/MapView'
 import Timeline from '@/components/Timeline'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -16,12 +14,9 @@ import { ChevronDown } from 'lucide-react'
 
 function App() {
   const [clockData, setClockData] = useState(null)
-  const [riskData, setRiskData] = useState(null)
   const [explanations, setExplanations] = useState(null)
   const [timeline, setTimeline] = useState(null)
-  const [mapData, setMapData] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [showRiskBreakdown, setShowRiskBreakdown] = useState(false)
   const [showTimeline, setShowTimeline] = useState(false)
 
   useEffect(() => {
@@ -43,12 +38,6 @@ function App() {
       })
       .catch(e => console.error("Clock fetch failed", e));
 
-    // 2. Risk Data
-    fetch('/api/risk/breakdown', { cache: 'no-store' })
-      .then(res => res.json())
-      .then(setRiskData)
-      .catch(e => console.error("Risk fetch failed", e));
-
     // 3. Explanations
     fetch('/api/clock/explanation/latest', { cache: 'no-store' })
       .then(res => res.json())
@@ -60,12 +49,6 @@ function App() {
       .then(res => res.json())
       .then(setTimeline)
       .catch(e => console.error("Timeline fetch failed", e));
-
-    // 5. Map Data
-    fetch('/api/map-data')
-      .then(res => res.json())
-      .then(setMapData)
-      .catch(e => console.error("Map fetch failed", e));
 
     setLoading(false);
   }
@@ -116,12 +99,6 @@ function App() {
               </GradientButton>
               <GradientButton
                 variant="variant"
-                onClick={() => setShowRiskBreakdown(!showRiskBreakdown)}
-              >
-                View risk breakdown
-              </GradientButton>
-              <GradientButton
-                variant="variant"
                 onClick={() => setShowTimeline(!showTimeline)}
               >
                 Historical timeline
@@ -135,21 +112,9 @@ function App() {
           </div>
         </section>
 
-        {/* Risk Breakdown Section */}
-        {showRiskBreakdown && riskData && (
-          <section id="risk-breakdown" className="py-16">
-            <RiskBreakdown data={riskData} />
-          </section>
-        )}
-
         {/* AI Explanation Section */}
         <section id="explanation" className="py-16">
           {explanations && <AIExplanation data={explanations} />}
-        </section>
-
-        {/* Map View Section */}
-        <section id="map" className="py-16">
-          {mapData && <MapView data={mapData} />}
         </section>
 
         {/* Timeline Section */}
