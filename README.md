@@ -1,13 +1,13 @@
 # 🕰️ Doomsday AI: The Autonomous Risk Clock
 
-[![Vercel Deploy](https://therealsujitk-vercel-badge.vercel.app/?app=doomsday-ai-lzee)](https://doomsday-ai-lzee.vercel.app/)
+[![Vercel Deploy](https://therealsujitk-vercel-badge.vercel.app/?app=doomsday-ai-lzee)](https://doomsday-nine.vercel.app/)
 [![Autonomous Scheduler](https://github.com/iamnih4l/doomsday-ai/actions/workflows/scheduler.yml/badge.svg)](https://github.com/iamnih4l/doomsday-ai/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > **"What time is it?"**
 > Currently: **90 Seconds to Midnight.** ⚠️
 
-[**🔴 VIEW LIVE CLOCK**](https://doomsday-ai-lzee.vercel.app/)
+[**🔴 VIEW LIVE CLOCK**](https://doomsday-nine.vercel.app/)
 
 ---
 
