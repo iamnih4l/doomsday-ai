@@ -2,20 +2,20 @@ name: Doomsday Autonomous Scheduler
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # Runs every 30 minutes
+    - cron: '30 23 * * *' # Runs daily at 23:30 UTC
   workflow_dispatch: # Allows manual trigger from GitHub UI
 
 jobs:
   trigger-doomsday:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger News Ingestion (Every 30 mins)
+      - name: Trigger News Ingestion (Daily at end of day)
         run: |
           curl -f -X POST ${{ secrets.VERCEL_PROJECT_URL }}/api/news/ingest \
           -H "x-admin-key: ${{ secrets.ADMIN_API_KEY }}"
 
-      - name: Trigger AI Evaluation (Runs every 30 mins, effectively)
-        # We hit this every 30 mins too. The AI service will just say "no new risks" if there are none.
+      - name: Trigger AI Evaluation (Daily at end of day)
+        # We hit this immediately after ingestion.
         run: |
           curl -f -X POST ${{ secrets.VERCEL_PROJECT_URL }}/api/ai/evaluate \
           -H "x-admin-key: ${{ secrets.ADMIN_API_KEY }}"
